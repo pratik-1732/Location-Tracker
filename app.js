@@ -19,6 +19,10 @@ io.on("connection", (socket) => {
   });
   console.log("connected");
 });
+
+io.on("disconnect", () => {
+  io.emit("user-disconnected", { id: socket.id });
+});
 app.get("/", (req, res) => {
   res.render("index");
 });
