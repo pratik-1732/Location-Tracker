@@ -1,8 +1,28 @@
 const express = require("express");
+const http = require("http");
+
 const app = express();
 const PORT = 3000;
+const path = require("path");
+
+const socketio = require("socket.io");
+
+const server = http.createServer(app);
+const io = socketio(server);
+
+app.set("view engine", "ejs");
+app.use("/public", express.static(path.join(__dirname, "public")));
+
+io.on("connection", (socket) => {
+  socket.on("send-location", (data) => {
+    io.emit("receive-location", { id: socket.id, ...data });
+  });
+  console.log("connected");
+});
 app.get("/", (req, res) => {
-  res.send("hey...");
+  res.render("index");
 });
 
-app.listen(PORT, console.log(`app is running on port ${PORT}`));
+server.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
+});
