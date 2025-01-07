@@ -6,6 +6,13 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+console.log("PORT from .env: ", process.env.PORT);
+
+if (!process.env.PORT) {
+  console.log(
+    "Warning: PORT not set in environment variables. Using default port 3000."
+  );
+}
 
 const path = require("path");
 
